@@ -31,6 +31,5 @@ def computer_guess(high):
             low = guess + 1
         elif feedback == "h":
             high = guess -1
-        break
       
     print(f'{guess} is correct.')
