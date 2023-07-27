@@ -11,13 +11,14 @@ def get_valid_word(words):
 
 
 def hangman():
-    word = get_valid_word
+    word = get_valid_word(words)
     word_letters = set(word)
-    alphabet = set(string.ascii_uppercase)
+    alphabet = set(string.ascii_uppercase) #A-Z
     used_letters = set()
 
     lives = 5
     while len(word_letters) >0 and lives >0:
+        print('You have', lives, "lives left.")
         print('You have used these letters: ', ' '.join(used_letters))
 
         word_list = [letter if letter in used_letters else '-' for letter in word]
@@ -42,4 +43,3 @@ def hangman():
     else:
         print ("You guessed the word ",  word, "!!" )
 
-hangman()
