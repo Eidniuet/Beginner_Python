@@ -15,21 +15,28 @@ def checking(player, computer):
     print (f"You choose {player}, Computer choose {computer}" )
     if player == computer:
         return "Tie"
-    elif player == "rock":
-        if computer == "scissors":
-            return "Win"
-        else:
-            return "Lose"
-    elif player == "paper":
-        if computer == "rock":
-            return "Win"
-        else:
-            return "Lose"   
-    elif player == "scissors":
-        if computer == "paper":
-            return "Win"
-        else:
-            return "Lose"
+    elif (player == "rock" and computer == "scissors") or (player == "paper" and computer == "rock")\
+          or (player == "scissors" and computer == "paper"):
+        return "Win"
+    return "Lose"
 x=get_choices()
 result = checking(x["Player"],x["Computer"])
 print (result)
+
+"""
+import random
+
+def play():
+    user = input('r', 'p', 's')
+    computer = random.choice([('r', 'p', 's')])
+
+    if is_win(user,computer):
+        return 'Won!'
+    if user == computer:
+        return 'Tie!'
+    return "Lost!"
+
+def is_win(player, opponent):
+    if (player == 'r' and opponent == 's') or (player == 's' and opponent == 'p')\
+        or (player == 'p' and opponent == 'r')
+"""
