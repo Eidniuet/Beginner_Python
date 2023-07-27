@@ -1,6 +1,6 @@
 import random
 
-class Card:
+class Card: #init card type => suit + value
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
@@ -8,7 +8,7 @@ class Card:
         return f"{self.rank['rank']} of {self.suit}"
 
 class Deck:
-    def __init__(self):
+    def __init__(self): # library
         self.cards =[]
         suits =["Spades", "Clubs", "Hearts", "Diamonds"]
         ranks =[        
