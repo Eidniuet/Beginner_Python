@@ -16,8 +16,8 @@ class Board:
     
     def make_newboard(self):
         board = [[None for _ in range(self.dim_size)] for _ in range (self.dim_size)]
-        
         bomb_planted = 0
+        
         while bomb_planted < self.num_bombs:
             loc = random.randint(0, self.dim_size**2-1)
             row = loc // self.dim_size

@@ -5,7 +5,7 @@ import re
 # This is so that when we code up the game, we can just say "create a new board object"
 # and dig on that board, etc.
 class Board:
-    def __init__(self, dim_size, num_bombs):
+    def __init__ (self, dim_size, num_bombs):
         # keep track of these parameters because we might find them helpful later on
         self.dim_size = dim_size
         self.num_bombs = num_bombs
@@ -26,10 +26,13 @@ class Board:
             loc = random.randint(0, (self.dim_size)**2+-1)
             row = loc // self.dim_size
             col = loc % self.dim_size
+            
             if board[row][col] == '*':
                 continue
+
             board[row][col] = '*'
             num_bomb_planted +=1
+
         return board
 
 
@@ -75,16 +78,14 @@ class Board:
         
 
     def __str__(self):
-        # return a string that shows the board to the player
-        visible_board = [[None for _ in range(self.dim_size)] for _ in range(self.dim.size)] # show empty board
-        for r in range(self.dim_size):
-            for c in range(self.dim_size):
-                if (r,c) in self.dug:
-                    visible_board = str(self.board[r][c])
+        visible_board = [[None for _ in range(self.dim_size)] for _ in range(self.dim_size)]
+        for row in range(self.dim_size):
+            for col in range(self.dim_size):
+                if (row,col) in self.dug:
+                    visible_board[row][col] = str(self.board[row][col])
                 else:
-                    visible_board = " "
+                    visible_board[row][col] = ' '
         
-    
         # put this together in a string
         string_rep = ''
         # get max column widths for printing
@@ -135,15 +136,14 @@ def play(dim_size=10, num_bombs=10):
             print("Invalid location. Try again.")
             continue
         safe= board.dig(row, col)
-    # Step 3b: if the location is not a bomb, dig recursively until one of the squares is next to a bomb
+    
         if not safe:
             break
-    # Step 4: repeat steps 2 and 3a/b until there are no more places to dig, then show victory
+
     if safe:
         print("CONGRATULATIONS!!!! YOU ARE VICTORIOUS!")
     else:
         print("SORRY GAME OVER :(")
-        # let's reveal the whole board!
         board.dug = [(r,c) for r in range(board.dim_size) for c in range(board.dim_size)]
         print(board)
 
