@@ -27,9 +27,5 @@ S= \
 
 ans = solveSudoku(S)
 
-"""b=[]
 for i in range(9):
-    for j in range(i*9 , i*9+9):
-        b[i].append(ans[j])
-    
-print (b)"""
+    print(ans[0][i*9:i*9+9])
