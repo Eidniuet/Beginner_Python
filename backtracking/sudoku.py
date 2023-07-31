@@ -77,5 +77,10 @@ if __name__ == '__main__':
         [6, 7, -1,   1, -1, 5,   -1, 4, -1],
         [1, -1, 9,   -1, -1, -1,   2, -1, -1]
     ]
+    import time
+tStart = time.time()#計時開始
+print(solveSudoku(S))
+tEnd = time.time()#計時結束
+print("Total time= %f seconds" % (tEnd - tStart))
     print(solve_sudoku(example_board))
     pprint(example_board)

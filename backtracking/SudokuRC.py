@@ -1,5 +1,4 @@
-def is_valid(i,j)
-    return
+
 def same_row(i,j): return (i//9 == j//9)
 def same_col(i,j): return (i-j) % 9 == 0
 def same_block(i,j): return (i//27 == j//27 and i%9//3 == j%9//3)
@@ -7,14 +6,14 @@ def same_block(i,j): return (i//27 == j//27 and i%9//3 == j%9//3)
 def solveSudoku(board):
     ans = []
     idx = board.index('.') if '.' in board else -1
-    if idx == -1: #解完了
+    if idx == -1: 
         return [board]
     exclude = {board[j] for j in range(81) if same_row(idx,j) or same_col(idx,j) or same_block(idx,j)}
     for m in set('123456789')-exclude:
         ans += solveSudoku(board[:idx]+[m]+board[idx+1:])
     return ans
 
-sudoku= \
+S= \
 ["5","3",".",".","7",".",".",".",".",
  "6",".",".","1","9","5",".",".",".",
  ".","9","8",".",".",".",".","6",".",
@@ -25,8 +24,12 @@ sudoku= \
  ".",".",".","4","1","9",".",".","5",
  ".",".",".",".","8",".",".","7","9"]
  
-import time
-tStart = time.time()#計時開始
-print(solveSudoku(sudoku))
-tEnd = time.time()#計時結束
-print("Total time= %f seconds" % (tEnd - tStart))
+
+ans = solveSudoku(S)
+
+"""b=[]
+for i in range(9):
+    for j in range(i*9 , i*9+9):
+        b[i].append(ans[j])
+    
+print (b)"""
