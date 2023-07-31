@@ -14,7 +14,7 @@ def custom_sort(char):
         return(4,char)
 
 def sort_string(input_string):
-    return "".join(sorted(input_string, key=custom_sort)) #it will separate as each element after sorted so needed ''.join 
+    return "".join(sorted(input_string, key=custom_sort)) #it will separate as each element in a list after sorted so needed ''.join 
 
 input_string = "Sorting1234"
 print(sort_string(input_string))
