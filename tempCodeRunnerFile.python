@@ -1,0 +1,3 @@
+s = input() #測試範例輸入 Sorting1234
+L=sorted(s, key= lambda x: (x.isdigit(), x.isdigit() and int(x) % 2 == 0, x.isupper()))
+print("".join(L)) #預期結果: ortingS1324
