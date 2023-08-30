@@ -11,7 +11,6 @@
 
 import pandas as pd
 
-
 class Vending_Machine:
     def __init__(self):
         self.products = [
