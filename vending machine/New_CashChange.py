@@ -47,10 +47,29 @@ class Vending_Machine:
         
     
     def show_products(self):
-        # for product in self.products:
-        #     print(f"Product: {product['itemName']} | ID: {product['itemID']} | Price: {product['itemPrice']}")
         print(self.product_df)
 
+    def is_valid_product_id(self, product_id):
+        if not product_id.isdigit() or int(product_id) < 1 or int(product_id) > 5:
+            print("Invalid product ID. Please enter a valid product ID (1-5).")
+            return False
+        return True
+    
+    def get_quantity(self):  
+        while True:
+            num = input("Please enter the quantity to buy: ")
+            if num.isdigit():
+                return int(num)
+            else:
+                print("Invalid Value. Please enter a valid quantity.")
+
+    def get_product(self, product_id):
+        product = next((product for product in self.products if product['itemID'] == product_id), None)
+        if product:
+            return product['itemName']
+        else:
+            return None
+    
     def total_prices(self, selected_products):
         total_price = 0
         for item_name, quantity in selected_products.items():
@@ -59,6 +78,24 @@ class Vending_Machine:
                 item_price = product['itemPrice']
                 total_price += item_price * quantity
         return total_price
+    
+    def get_valid_cash(self,prompt):
+        while True:
+            try:
+                value = int(input(prompt))
+                return value
+            except ValueError:
+                print("Invalid input. Please enter a valid integer.")
+
+    def get_sufficient_cash(self, total_prices):
+        cash = self.get_valid_cash("Please enter the cash amount: ")
+
+        while cash < total_prices:
+            print(f"Insufficient money: Cash In: {cash} less than Total Price: {total_prices} need at least: {total_prices - cash} more.")
+            extra_cash = self.get_valid_integer_input("Please enter additional cash amount: ")
+            cash += extra_cash
+
+        return cash
 
     def return_notes(self, remaining):
         change = remaining
@@ -73,7 +110,8 @@ class Vending_Machine:
     
     def main(self):
         selected_products = {}
-        print('------Drinks Vending Machine------')
+        price_list ={}
+        print('------Beverage Vending Machine------')
         self.show_products()
         
         while True:
@@ -94,22 +132,14 @@ class Vending_Machine:
             elif input_product.lower() == 'd':
                 while True:
                     del_id = input("Enter the product ID (1-5) for the product you want to delete: ")
-                    if not del_id.isdigit() or int(del_id) < 1 or int(del_id) > 5:
-                        print("Invalid product . Please enter a valid product ID (1-5).")
+                    if not self.is_valid_product_id(del_id):
                         continue
-                    del_num = input("Please enter the quantity to buy: ")
-                    while not del_num.isdigit() and not isinstance(del_num, int):
-                        print("Invalid Value")
-                        del_num = input("Please enter correct the quantity to buy: ")
                     
-                    del_num = int(del_num)
-                    product = next((product for product in self.products if product['itemID'] == del_id), None)
-
-                    if product:
-                        product_name = product['itemName']
+                    del_num = self.get_quantity()
+                    product_name = self.get_product(del_id)
                         
                     if product_name in selected_products:
-                        if selected_products[product_name] < del_num:
+                        if selected_products[product_name] <= del_num:
                             del selected_products[product_name]
                             break
                         else:
@@ -122,50 +152,27 @@ class Vending_Machine:
                 print(f'Current Products: {selected_products} | Total Prices: {total_prices}')
                 continue
 
-            elif not input_product.isdigit() or int(input_product) < 1 or int(input_product) > 5:
-                print("Invalid product ID. Please enter a valid product ID (1-5).")
+            elif not self.is_valid_product_id(input_product):
                 continue
-
-            # if any(product['itemID'] == input_product for product in self.products): //no use
-            num = input("Please enter the quantity to buy: ")
-            while not num.isdigit() and not isinstance(num, int):
-                print("Invalid Value")
-                num = input("Please enter correct the quantity to buy: ")
             
-            num = int(num)
-            product = next((product for product in self.products if product['itemID'] == input_product), None)
-
-            if product:
-                product_name = product['itemName']
+            num = self.get_quantity()
+            product_name = self.get_product(input_product)
+            
             if product_name in selected_products:
                 selected_products[product_name] += num
+                
             else:
                 selected_products[product_name] = num
+                
             
             total_prices = self.total_prices(selected_products)
             print(f'Current Products: {selected_products} | Total Prices: {total_prices}')
         
-
-        while True:
-            try:
-                cash = int(input("Please enter the cash amount: "))
-                break  # Exit the loop if a valid integer is provided
-            except ValueError:
-                print("Invalid input. Please enter a valid integer for cash.")
-
-        while cash < total_prices:
-            print(f"Insufficient money: Cash In: {cash} less than Total Price: {total_prices}")
-            while True:
-                try:
-                    extra_cash = int(input("Please enter additional cash amount: "))
-                    cash += extra_cash
-                    break  # Exit the loop if a valid integer is provided
-                except ValueError:
-                    print("Invalid input. Please enter a valid integer for cash.")
         
+        cash = self.get_sufficient_cash(total_prices)
         remaining = cash - total_prices
         money_list = self.return_notes(remaining)
-        bill_dict = [{'': 'Cash', 'RM': cash},
+        bill_dict = [{'': 'Cash In', 'RM': cash},
                     {'': 'Total Price', 'RM': total_prices},
                     {'': 'Return Money',  'RM': remaining }]
         bill_df = pd.DataFrame(bill_dict)

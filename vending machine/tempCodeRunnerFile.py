@@ -1,0 +1,1 @@
+product_name = self.get_product_name(del_id)
