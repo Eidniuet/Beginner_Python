@@ -10,7 +10,6 @@
 # The logic of the vending machine will be able to return the least amount of notes back to the customers.
 
 import pandas as pd
-import numpy as np
 
 class Vending_Machine:
     def __init__(self):
