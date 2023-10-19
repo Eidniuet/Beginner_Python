@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Card Game</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .hand-text {
+            text-align: left;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button id="shuffle">Shuffle</button>
+    <button id="play">Play</button>
+    <div id="result">Result: </div>
+
+    <div>
+        <div>Banker Wins: <span id="bankerWins">{{ banker_wins }}</span></div>
+        <div>Player Wins: <span id="playerWins">{{ player_wins }}</span></div>
+    </div>
+
+    <div class="hand-text">Banker Hand</div>
+    <img id="bankerCard1" src="static/images/back001.gif" alt="Banker Card 1">
+    <img id="bankerCard2" src="static/images/back001.gif" alt="Banker Card 2">
+    <div id="bankerValue" class="hand-value">Banker Value: {{ banker_value }}</div>
+
+    <div class="hand-text">Player Hand</div>
+    <img id="playerCard1" src="static/images/back001.gif" alt="Player Card 1">
+    <img id="playerCard2" src="static/images/back001.gif" alt="Player Card 2">
+    <div id="playerValue" class="hand-value">Player Value: {{ player_value }}</div>
+
+    <canvas id="winChart"></canvas>
+</body>
+<script>
+    $(document).ready(function () {
+        $('#shuffle').click(function () {
+            $.post('/shuffle', function () {
+                $('#result').text('Result: ');
+                $('#bankerWins').text('0');
+                $('#playerWins').text('0');
+                alert('Deck shuffled and counters reset.');
+            });
+        });
+
+        var winChart = new Chart(document.getElementById('winChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Banker Wins', 'Player Wins'],
+                datasets: [
+                    {
+                        label: 'Banker Wins',
+                        backgroundColor: 'blue',
+                        data: [0, 0] 
+                    },
+                    {
+                        label: 'Player Wins',
+                        backgroundColor: 'green',
+                        data: [0, 0] 
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        $('#play').click(function () {
+            $.post('/play', function (data) {
+                
+                $('#result').text('Result: ' + data.result);
+                $('#bankerCard1').attr('src', 'static/images/' + data.bankerCards[0] + '.gif');
+                $('#bankerCard2').attr('src', 'static/images/' + data.bankerCards[1] + '.gif');
+                $('#playerCard1').attr('src', 'static/images/' + data.playerCards[0] + '.gif');
+                $('#playerCard2').attr('src', 'static/images/' + data.playerCards[1] + '.gif');
+                $('#bankerValue').text('Banker Value: ' + data.bankerValue);
+                $('#playerValue').text('Player Value: ' + data.playerValue);
+                $('#bankerWins').text(data.bankerWins);
+                $('#playerWins').text(data.playerWins);
+
+                winChart.data.datasets[0].data = [data.bankerWins, 0];
+                winChart.data.datasets[1].data = [0, data.playerWins];
+                winChart.update();
+            });
+        });
+    });
+</script>
+</html>
+
+
+
+
+
