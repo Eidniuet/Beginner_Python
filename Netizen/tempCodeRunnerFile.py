@@ -3,7 +3,7 @@ import base64
 
 name = "Tong Weng Hong"
 email = "wenghongtong27@gmail.com"
-resume_pdf_path = r"C:\Users\Eidniuet\OneDrive\Desktop\Hong\Job\Resume.pdf"
+resume_pdf_path = r"C:\Users\Eidniuet\OneDrive\Desktop\Hong\Job\CV.pdf"
 
 with open(resume_pdf_path, "rb") as file:
     resume_pdf_base64 = base64.b64encode(file.read()).decode("utf-8")
